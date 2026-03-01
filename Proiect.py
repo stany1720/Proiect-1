@@ -534,4 +534,3 @@ Responsabila pentru:
     elif selectie == "12":
         print("Ati iesit din program!")
         break
- 
