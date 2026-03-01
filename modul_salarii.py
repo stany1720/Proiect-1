@@ -1,4 +1,5 @@
 import os
+import datetime
 from typing import List, Dict, Any
 import cautare
 
@@ -95,7 +96,9 @@ CASS-ul este de {cass} RON,
 --------------------------------
 Impozitul este de {impozit} RON 
 --------------------------------
-Salariul net este de {net} RON''')
+Salariul net este de {net} RON
+--------------------------------
+Aceasta este situatia curenta la data: {datetime}''')
 
 def export_fluturasi(angajati: ListaAngajati) -> None:
     """
@@ -148,6 +151,6 @@ CASS-ul este de {cass} RON
 --------------------------------
 Impozitul este de {impozit} RON
 --------------------------------
-Salariul net este de {net} RON'''
-        )
- 
+Salariul net este de {net} RON
+--------------------------------
+Aceasta este situatia curenta la data: {datetime}''')

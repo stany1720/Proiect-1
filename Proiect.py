@@ -71,6 +71,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
         None
     """
     while True:
+        # --- Adaugare Nume ---
         nume = input("Introdu numele de familie: ").strip().title()
         if nume.isalpha() and nume != '':
             nume = nume.title()
@@ -78,6 +79,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
         else:
             print("Numele trebuie sa contina doar litere. \nIncercati din nou.")
     while True:
+        # --- Adaugare Prenume ---
         prenume = input("Introdu numele mic: ").strip().title()
         if prenume.isalpha() and prenume != '':
             prenume = prenume.title()
@@ -85,6 +87,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
         else:
             print("Prenumele trebuie sa contina doar litere. \nIncercati din nou.")
     while True:
+        # --- Adaugare CNP ---
         cnp = input("Introdu doar cifrele CNP-ului: ").strip()
         cnp_existente = {angajat['CNP'] for angajat in angajati}
         if (cnp.isdigit() and len(cnp) == 13 and cnp not in cnp_existente):
@@ -95,6 +98,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
                 "Nu pot exista doi angajati cu acelasi CNP.\n"
                 "Incercati din nou.")
     while True:
+        # --- Adaugare Varsta ---
         varsta = input("Introdu varsta: ").strip()
         validare_varsta = True
         for caracter in varsta:
@@ -107,6 +111,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
             print(
                 "Varsta trebuie sa contina numai cifre. \nVarsta minima pentru angajare este 18 ani.")
     while True:
+        # --- Adaugare Salar ---
         salar = input("Introdu salarul angajatului: ").strip()
         if salar.isdigit() and int(salar) >= 4050:
             salar = int(salar)
@@ -120,6 +125,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
         rezultat = set(lista_departamente)
     print(rezultat)
     while True:
+        # --- Adaugare Departament ---
         select_departament = input(
             "Selecteaza departamentul din optiunile de mai sus:").strip()
         if select_departament in rezultat:
@@ -143,6 +149,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
         """)
     select_senior = input("Selecteaza senioritatea din optiunile de mai sus:")
     while True:
+        # --- Adaugare Senioritate ---
         if select_senior == "1":
             senioritate = "Junior"
             break
@@ -209,6 +216,7 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
         select_mod = input("Alegeti o optiune de mai sus: ")
         if select_mod == "1":
             while True:
+                # --- Modificare CNP ---
                 cnp_existente = {angajat['CNP'] for angajat in angajati if angajat != angajat_gasit}
                 cnp_nou = input("Corectati CNP-ul angajatului: ").strip()
                 if (cnp_nou.isdigit() and len(cnp_nou) == 13 and cnp_nou not in cnp_existente):
@@ -226,6 +234,7 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
             continue
         elif select_mod == "2":
             while True:
+                # --- Modificare Nume ---
                 nume_nou = input(
                     "Modificati numele angajatului: ")
                 if nume_nou.isalpha() and nume_nou != '':
@@ -239,6 +248,7 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
                 print("Ce alte campuri mai doresti sa editezi? ")
         elif select_mod == "3":
             while True:
+                # --- Modificare Prenume ---
                 prenume_nou = input(
                     "Modificati prenumele angajatului: ")
                 if prenume_nou.isalpha() and prenume_nou != '':
@@ -254,6 +264,7 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
                 continue
         elif select_mod == "4":
             while True:
+                # --- Modificare Varsta ---
                 angajat_gasit['Varsta'] = input(
                     "Modificati varsta angajatului: ")
                 validare_varsta = True
@@ -273,6 +284,7 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
             continue
         elif select_mod == "5":
             while True:
+                # --- Modificare Salar ---
                 angajat_gasit['Salar'] = input(
                     "Modificati salariul angajatului: ")
                 if angajat_gasit['Salar'].isdigit() and int(angajat_gasit['Salar']) >= 4050:
@@ -287,6 +299,7 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
             print("Ce alte campuri mai doresti sa editezi? ")
             continue
         elif select_mod == "6":
+            # --- Modificare Departament ---
             lista_departamente = []
             for angajat in angajati:
                 lista_departamente.append(angajat['Departament'].upper())
@@ -306,6 +319,7 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
             print("Ce alte campuri mai doresti sa editezi? ")
             continue
         elif select_mod == "7":
+            # --- Modificare Senioritate ---
             lista_senioritate = []
             for angajat in angajati:
                 lista_senioritate.append(angajat['Senioritate'].upper())
