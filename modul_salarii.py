@@ -150,3 +150,4 @@ Impozitul este de {impozit} RON
 --------------------------------
 Salariul net este de {net} RON'''
         )
+ 
