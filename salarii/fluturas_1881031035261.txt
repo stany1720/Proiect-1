@@ -1,0 +1,13 @@
+Pentru angajatul Stanislav Mihai,
+--------------------------------
+Salariul brut este de 15000 RON
+--------------------------------
+CAS-ul este de 1500.0 RON
+--------------------------------
+CASS-ul este de 3750.0 RON
+--------------------------------
+Impozitul este de 975.0 RON
+--------------------------------
+Salariul net este de 8775.0 RON
+--------------------------------
+Aceasta este situatia curenta la data: 2026-03-02 01:39:17.052045

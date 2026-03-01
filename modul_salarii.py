@@ -116,6 +116,7 @@ def export_fluturasi(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    data_curenta = datetime.datetime.now()
     path_director = r"Proiect 1\salarii"
     if not os.path.exists(path_director):
         os.makedirs(path_director)
@@ -153,4 +154,4 @@ Impozitul este de {impozit} RON
 --------------------------------
 Salariul net este de {net} RON
 --------------------------------
-Aceasta este situatia curenta la data: {datetime}''')
+Aceasta este situatia curenta la data: {data_curenta}''')
