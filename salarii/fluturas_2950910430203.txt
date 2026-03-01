@@ -1,0 +1,10 @@
+Pentru angajatul Enache Bianca, 
+Salariul brut este de 8700 RON
+--------------------------------
+CAS-ul este de 870.0 RON, 
+--------------------------------
+CASS-ul este de 2175.0 RON, 
+--------------------------------
+Impozitul este de 565.5 RON 
+--------------------------------
+Salariul net este de 5089.5 RON

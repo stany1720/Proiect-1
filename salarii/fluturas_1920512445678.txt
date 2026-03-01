@@ -1,0 +1,10 @@
+Pentru angajatul Popescu Andrei,
+Salariul brut este de 14600 RON
+--------------------------------
+CAS-ul este de 1460.0 RON
+--------------------------------
+CASS-ul este de 3650.0 RON
+--------------------------------
+Impozitul este de 949.0 RON
+--------------------------------
+Salariul net este de 8541.0 RON
