@@ -1,4 +1,5 @@
 from typing import List, Dict, Any, Optional
+import display
 
 Angajat = Dict[str, Any]
 ListaAngajati = List[Angajat]
@@ -30,13 +31,13 @@ def cautare_angajat(angajati: ListaAngajati) -> Optional[Angajat]:
         cnp_cautat = input("Introdu CNP-ul angajatului cautat: ")
         for angajat in angajati:
             if cnp_cautat == angajat['CNP']:
-                print(f"Angajatul cautat este: {angajat}")
+                display.succes(f"Angajatul cautat este: {angajat['Nume']} {angajat['Prenume']} | {angajat['CNP']} | {angajat['Varsta']} | {angajat['Salar']} | {angajat['Departament']} | {angajat['Senioritate']} \n")
                 return angajat
 
-        print("Angajatul cautat nu a fost gasit! \n1. Incercati din nou \nsau \n2. Iesiti din program.")
+        display.eroare("Angajatul cautat nu a fost gasit! \n1. Incercati din nou \nsau \n2. Iesiti din program.")
         select_caut = input("Selectati o optiune de mai sus: ")
         if select_caut == "1":
             continue
         elif select_caut == "2":
-            print("Am inchis programul! ")
+            display.info("Am inchis programul! ")
             break

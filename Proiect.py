@@ -1,4 +1,5 @@
 from typing import List, Dict, Any
+import display
 import csv
 import json
 import cautare
@@ -70,6 +71,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    display.titlu("Adauga un angajat nou in sistem")
     while True:
         # --- Adaugare Nume ---
         nume = input("Introdu numele de familie: ").strip().title()
@@ -77,7 +79,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
             nume = nume.title()
             break
         else:
-            print("Numele trebuie sa contina doar litere. \nIncercati din nou.")
+            display.eroare("Numele trebuie sa contina doar litere. \nIncercati din nou.")
     while True:
         # --- Adaugare Prenume ---
         prenume = input("Introdu numele mic: ").strip().title()
@@ -85,7 +87,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
             prenume = prenume.title()
             break
         else:
-            print("Prenumele trebuie sa contina doar litere. \nIncercati din nou.")
+            display.eroare("Prenumele trebuie sa contina doar litere. \nIncercati din nou.")
     while True:
         # --- Adaugare CNP ---
         cnp = input("Introdu doar cifrele CNP-ului: ").strip()
@@ -93,7 +95,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
         if (cnp.isdigit() and len(cnp) == 13 and cnp not in cnp_existente):
             break
         else:
-            print(
+            display.eroare(
                 "CNP-ul trebuie sa aiba 13 cifre si sa contina doar cifre.\n"
                 "Nu pot exista doi angajati cu acelasi CNP.\n"
                 "Incercati din nou.")
@@ -108,7 +110,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
             varsta = int(varsta)
             break
         else:
-            print(
+            display.eroare(
                 "Varsta trebuie sa contina numai cifre. \nVarsta minima pentru angajare este 18 ani.")
     while True:
         # --- Adaugare Salar ---
@@ -117,22 +119,22 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
             salar = int(salar)
             break
         else:
-            print("Salariul trebuie sa contina doar cifre. \nSalariul trebuie sa fie macar egal cu salariul minim pe economie, adica 4050 RON brut \nIncercati din nou.")
+            display.eroare("Salariul trebuie sa contina doar cifre. \nSalariul trebuie sa fie macar egal cu salariul minim pe economie, adica 4050 RON brut \nIncercati din nou.")
             continue
     lista_departamente = []
     for angajat in angajati:
-        lista_departamente.append(angajat['Departament'])
+        lista_departamente.append(angajat['Departament'].upper())
         rezultat = set(lista_departamente)
-    print(rezultat)
+    display.info(rezultat)
     while True:
         # --- Adaugare Departament ---
         select_departament = input(
-            "Selecteaza departamentul din optiunile de mai sus:").strip()
+            "Selecteaza departamentul din optiunile de mai sus:").strip().upper()
         if select_departament in rezultat:
             departament = select_departament
             break
         else:
-            print("Doriti sa creati un departamentr nou? \n1. DA \nsau \n2. NU")
+            display.info("Doriti sa creati un departamentr nou? \n1. DA \nsau \n2. NU")
             raspuns = input("Alegeti un raspuns de mai sus. ")
             if raspuns == "1":
                 departament = select_departament
@@ -140,16 +142,17 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
             elif raspuns == "2":
                 continue
             else:
-                print(
+                display.eroare(
                     "Optiunea selectata nu corespunde cu optiunile prezente. \nVa rugam incercati din nou.")
-    print("""Introdu senioritatea angajatului:
+    
+    while True:
+        # --- Adaugare Senioritate ---
+        display.info("""Introdu senioritatea angajatului:
 1. Junior
 2. Mid
 3. Senior
         """)
-    select_senior = input("Selecteaza senioritatea din optiunile de mai sus:")
-    while True:
-        # --- Adaugare Senioritate ---
+        select_senior = input("Selecteaza senioritatea din optiunile de mai sus:")
         if select_senior == "1":
             senioritate = "Junior"
             break
@@ -159,8 +162,8 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
         elif select_senior == "3":
             senioritate = "Senior"
             break
-        else:
-            print(
+        elif select_senior != "1" or "2" or "3":
+            display.eroare(
                 "Optiunea selectata nu corespunde cu optiunile prezente. \nVa rugam incercati din nou.")
     angajat = {
         "Nume": nume,
@@ -171,7 +174,7 @@ def adaugare_angajat(angajati: ListaAngajati) -> None:
         "Departament": departament,
         "Senioritate": senioritate
     }
-    print(f"Angajatul adaugat este: {angajat}")
+    display.info(f"Angajatul adaugat este: {angajat}")
     angajati.append(angajat)
     return
 
@@ -199,11 +202,12 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    display.titlu("Modificarea datelor unui angajat")
     angajat_gasit = cautare.cautare_angajat(angajati)
     if angajat_gasit is None:
         return
     while True:
-        print("""Ce campuri doriti sa modificati?
+        display.info("""Ce campuri doriti sa modificati?
         1) CNP
         2) Nume
         3) Prenume
@@ -221,16 +225,16 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
                 cnp_nou = input("Corectati CNP-ul angajatului: ").strip()
                 if (cnp_nou.isdigit() and len(cnp_nou) == 13 and cnp_nou not in cnp_existente):
                     angajat_gasit['CNP'] = cnp_nou
-                    print("Validare reusita.")
+                    display.succes("Validare reusita.")
                     salvare(angajati)
                     break
                 else:
-                    print("CNP-ul trebuie sa aiba 13 cifre si sa contina doar cifre.")
-                    print("Atentie, nu pot exista 2 angajati cu acelasi CNP.")
-                    print("Incercati din nou.")
-            print(
+                    display.eroare("CNP-ul trebuie sa aiba 13 cifre si sa contina doar cifre.")
+                    display.eroare("Atentie, nu pot exista 2 angajati cu acelasi CNP.")
+                    display.eroare("Incercati din nou.")
+            display.succes(
                 f"{angajat_gasit['Nume']} are acum CNP-ul: {angajat_gasit['CNP']}.")
-            print("Ce alte campuri mai doresti sa editezi? ")
+            display.info("Ce alte campuri mai doresti sa editezi? ")
             continue
         elif select_mod == "2":
             while True:
@@ -240,12 +244,13 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
                 if nume_nou.isalpha() and nume_nou != '':
                     angajat_gasit['Nume'] = nume_nou.title()
                     salvare(angajati)
+                    display.succes(
+                    f"{angajat_gasit['CNP']} are acum numele: {angajat_gasit['Nume']}.")
                     break
                 else:
-                    print("Numele trebuie sa contina doar litere. \nIncercati din nou.")
-                print(
-                    f"{angajat_gasit['CNP']} are acum numele: {angajat_gasit['Nume']}.")
-                print("Ce alte campuri mai doresti sa editezi? ")
+                    display.eroare("Numele trebuie sa contina doar litere. \nIncercati din nou.")
+                    continue  
+            display.info("Ce alte campuri mai doresti sa editezi? ")
         elif select_mod == "3":
             while True:
                 # --- Modificare Prenume ---
@@ -254,14 +259,14 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
                 if prenume_nou.isalpha() and prenume_nou != '':
                     angajat_gasit['Prenume'] = prenume_nou.title()
                     salvare(angajati)
+                    display.succes(
+                    f"{angajat_gasit['Nume']} are acum prenumele: {angajat_gasit['Prenume']}.")
                     break
                 else:
-                    print(
+                    display.eroare(
                         "Prenumele trebuie sa contina doar litere. \nIncercati din nou.")
-                print(
-                    f"{angajat_gasit['Nume']} are acum prenumele: {angajat_gasit['Prenume']}.")
-                print("Ce alte campuri mai doresti sa editezi? ")
-                continue
+                    continue
+            display.info("Ce alte campuri mai doresti sa editezi? ")
         elif select_mod == "4":
             while True:
                 # --- Modificare Varsta ---
@@ -274,14 +279,13 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
                 if validare_varsta and angajat_gasit['Varsta'] != '' and int(angajat_gasit['Varsta']) >= 18:
                     angajat_gasit['Varsta'] = int(angajat_gasit['Varsta'])
                     salvare(angajati)
+                    display.succes(f"{angajat_gasit['Nume']} are acum varsta de {angajat_gasit['Varsta']} ani.")
                     break
                 else:
-                    print(
+                    display.eroare(
                         "Varsta trebuie sa contina numai cifre. \nVarsta minima pentru angajare este 18 ani.")
-            print(
-                f"{angajat_gasit['Nume']} are acum varsta de {angajat_gasit['Varsta']} ani.")
-            print("Ce alte campuri mai doresti sa editezi? ")
-            continue
+                    continue
+            display.info("Ce alte campuri mai doresti sa editezi? ")
         elif select_mod == "5":
             while True:
                 # --- Modificare Salar ---
@@ -290,59 +294,65 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
                 if angajat_gasit['Salar'].isdigit() and int(angajat_gasit['Salar']) >= 4050:
                     angajat_gasit['Salar'] = int(angajat_gasit['Salar'])
                     salvare(angajati)
+                    display.succes(f"{angajat_gasit['Nume']} are acum salariul de {angajat_gasit['Salar']} RON.")
                     break
                 else:
-                    print("Salariul trebuie sa contina doar cifre. \nSalariul trebuie sa fie macar egal cu salariul minim pe economie, adica 4050 RON brut \nIncercati din nou.")
-
-            print(
-                f"{angajat_gasit['Nume']} are acum salariul de {angajat_gasit['Salar']} RON.")
-            print("Ce alte campuri mai doresti sa editezi? ")
-            continue
+                    display.eroare("Salariul trebuie sa contina doar cifre. \nSalariul trebuie sa fie macar egal cu salariul minim pe economie, adica 4050 RON brut \nIncercati din nou.")
+                    continue
+            display.info("Ce alte campuri mai doresti sa editezi? ")
         elif select_mod == "6":
             # --- Modificare Departament ---
             lista_departamente = []
             for angajat in angajati:
                 lista_departamente.append(angajat['Departament'].upper())
                 rezultat = set(lista_departamente)
-            print(f'Departamentele disponibile sunt: {rezultat}')
+            display.info(f'Departamentele disponibile sunt: {rezultat}')
             while True:
                 departament = input(
                     "La ce departament doresti sa transferi angajatul? ").upper()
                 if departament.upper() in rezultat:
                     angajat_gasit['Departament'] = departament
                     salvare(angajati)
+                    display.succes(f"{angajat_gasit['Nume']} a fost transferat la departamentul: {angajat_gasit['Departament']}.")
                     break
                 else:
-                    print("Alegeti un departament din cele de mai sus.")
-            print(
-                f"{angajat_gasit['Nume']} a fost transferat la departamentul: {angajat_gasit['Departament']}.")
-            print("Ce alte campuri mai doresti sa editezi? ")
-            continue
+                    display.info("Doriti sa creati un departamentr nou? \n1. DA \nsau \n2. NU")
+                    raspuns = input("Alegeti un raspuns de mai sus. ")
+                    if raspuns == "1":
+                        angajat_gasit['Departament'] = departament
+                        display.succes(f"{angajat_gasit['Nume']} {angajat_gasit['Prenume']} a fost mutata in noul departament!")
+                        salvare(angajati)
+                        break
+                    elif raspuns == "2":
+                        continue
+                    else:
+                        display.eroare(
+                            "Optiunea selectata nu corespunde cu optiunile prezente. \nVa rugam incercati din nou.")
+            display.info("Ce alte campuri mai doresti sa editezi? ")
         elif select_mod == "7":
             # --- Modificare Senioritate ---
             lista_senioritate = []
             for angajat in angajati:
                 lista_senioritate.append(angajat['Senioritate'].upper())
                 rezultat = set(lista_senioritate)
-            print(f'Senioritatile disponibile sunt: {rezultat}')
+            display.info(f'Senioritatile disponibile sunt: {rezultat}')
             while True:
                 senioritate = input(
                     "Ce senioritate doresti sa-i atribui angajatului? ").upper()
                 if senioritate.upper() in rezultat:
                     angajat_gasit['Senioritate'] = senioritate
                     salvare(angajati)
+                    display.succes(f"{angajat_gasit['Nume']} are acum senioritatea: {angajat_gasit['Senioritate']}")
                     break
                 else:
-                    print("Alegeti un nivel de senioritate din cele de mai sus.")
-            print(
-                f"{angajat_gasit['Nume']} are acum senioritatea: {angajat_gasit['Senioritate']}")
-            print("Ce alte campuri mai doresti sa editezi? ")
-            continue
+                    display.info("Alegeti un nivel de senioritate din cele de mai sus.")
+                    continue
+            display.info("Ce alte campuri mai doresti sa editezi? ")
         elif select_mod == "8":
-            print("Am iesit din sectiunea de modificari! ")
+            display.info("Am iesit din sectiunea de modificari! ")
             return
         else:
-            print("Selectia nu corespunde nici unei optiuni. \nInceraca din nou.")
+            display.eroare("Selectia nu corespunde nici unei optiuni. \nInceraca din nou.")
             continue
 
 def stergere_angajat(angajati: ListaAngajati) -> None:
@@ -362,15 +372,16 @@ def stergere_angajat(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    display.titlu("Sterge un angajat din sistem")
     angajat_gasit = cautare.cautare_angajat(angajati)
     if angajat_gasit is None:
         return
     while True:
-        confirmare = input(
+        confirmare = display.intrebare(
             "Sunteti sigur ca doriti sa stergeti acest angajat? \n1. DA \n2. NU \nAlegeti: ")
         if confirmare == "1":
             angajati.remove(angajat_gasit)
-            print("Angajatul a fost sters din sistem")
+            display.succes("Angajatul a fost sters din sistem")
             salvare(angajati)
             break
         elif confirmare == "2":
@@ -393,8 +404,10 @@ def afisare_angajati(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
-    print('Lista angajatilor firmei a fost exportata in fisierul: lista_angajati.csv')
-    print('Lista angajatilor firmei, este dupa cum urmeaza:...')
+    display.titlu("Afiseaza lista angajatilor")
+    display.succes('''Lista angajatilor firmei a fost exportata in fisierul: lista_angajati.csv \n''')
+    display.info('''Lista angajatilor firmei, este dupa cum urmeaza:...
+======================================================= \n''')
     with open('lista_angajati.csv', "w", newline='', encoding='utf-8') as lista_angajati:
         antet = (["Nume", "Prenume", "CNP", "Varsta",
                  "Salar", "Departament", "Senioritate"])
@@ -402,7 +415,7 @@ def afisare_angajati(angajati: ListaAngajati) -> None:
         dict_writer.writeheader()
         for salariat in angajati:
             dict_writer.writerow(salariat)
-            print(salariat)
+            display.info(f'{salariat['Nume']} {salariat['Prenume']} | {salariat['CNP']} | {salariat['Varsta']} | {salariat['Salar']} | {salariat['Departament']} | {salariat['Senioritate']} \n')
 
 def afisare_angajati_dupa_senioritate(angajati: ListaAngajati) -> None:
     """
@@ -423,28 +436,31 @@ def afisare_angajati_dupa_senioritate(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    display.titlu("Afiseaza si exporta angajatii dupa senioritate.")
     lista_senioritate = []
     for angajat in angajati:
         lista_senioritate.append(angajat['Senioritate'].upper())
         rezultat = set(lista_senioritate)
-    print(f'Senioritatile disponibile sunt: {rezultat}')
+    display.info(f'Senioritatile disponibile sunt: {rezultat}')
     while True:
         senioritate = input("Ce senioritate cauti? ").upper()
         gasit = False
-        with open('lista_angajati_senioritate.csv', "w", newline='', encoding='utf-8') as angajati_sen:
-            antet = (["Nume", "Prenume", "CNP", "Varsta",
-                     "Salar", "Departament", "Senioritate"])
-            dict_writer = csv.DictWriter(angajati_sen, fieldnames=antet)
-            dict_writer.writeheader()
-            for angajat in angajati:
-                if angajat['Senioritate'].upper() == senioritate and senioritate in lista_senioritate:
-                    print(angajat)
-                    dict_writer.writerow(angajat)
-                    gasit = True
-        if gasit:
-            return
+        if senioritate in rezultat:
+            with open('lista_angajati_senioritate.csv', "w", newline='', encoding='utf-8') as angajati_sen:
+                antet = (["Nume", "Prenume", "CNP", "Varsta",
+                        "Salar", "Departament", "Senioritate"])
+                dict_writer = csv.DictWriter(angajati_sen, fieldnames=antet)
+                dict_writer.writeheader()
+                for angajat in angajati:
+                    if angajat['Senioritate'].upper() == senioritate and senioritate in lista_senioritate:
+                        display.evidentiaza(angajat)
+                        dict_writer.writerow(angajat)
+                        gasit = True
+                display.succes("Lista angajatilor a fost exportata cu succes!")
+            if gasit:
+                return
         else:
-            print("Alegeti un nivel de senioritate din cele se mai sus.")
+            display.info("Alegeti un nivel de senioritate din cele se mai sus.")
 
 def afisare_angajati_dupa_departament(angajati: ListaAngajati) -> None:
     """
@@ -465,28 +481,31 @@ def afisare_angajati_dupa_departament(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    display.titlu("Afiseaza si exporta angajatii dupa departament")
     lista_departamente = []
     for angajat in angajati:
         lista_departamente.append(angajat['Departament'].upper())
         rezultat = set(lista_departamente)
-    print(f'Departamentele disponibile sunt: {rezultat}')
+    display.info(f'Departamentele disponibile sunt: {rezultat}')
     while True:
         departament = input("Ce departament cauti? ").upper()
         gasit = False
-        with open('lista_angajati_departament.csv', "w", newline='', encoding='utf-8') as angajati_dep:
-            antet = (["Nume", "Prenume", "CNP", "Varsta",
-                     "Salar", "Departament", "Senioritate"])
-            dict_writer = csv.DictWriter(angajati_dep, fieldnames=antet)
-            dict_writer.writeheader()
-            for angajat in angajati:
-                if angajat['Departament'].upper() == departament and departament in lista_departamente:
-                    print(angajat)
-                    dict_writer.writerow(angajat)
-                    gasit = True
-        if gasit:
-            return
+        if departament in rezultat:
+            with open('lista_angajati_departament.csv', "w", newline='', encoding='utf-8') as angajati_dep:
+                antet = (["Nume", "Prenume", "CNP", "Varsta",
+                        "Salar", "Departament", "Senioritate"])
+                dict_writer = csv.DictWriter(angajati_dep, fieldnames=antet)
+                dict_writer.writeheader()
+                for angajat in angajati:
+                    if angajat['Departament'].upper() == departament and departament in lista_departamente:
+                        display.evidentiaza(angajat)
+                        dict_writer.writerow(angajat)
+                        gasit = True
+                display.succes("Lista angajatilor a fost exportata cu succes!")        
+            if gasit:
+                return
         else:
-            print("Alegeti un departament din cele se mai sus.")
+            display.info("Alegeti un departament din cele se mai sus.")
 
 while True:
     """
@@ -502,9 +521,10 @@ Responsabila pentru:
         with open("angajati.json", "r", encoding='utf8') as fisier_angajati:
             angajati = json.load(fisier_angajati)
     except FileNotFoundError:
-        print('Fisierul cu angajatii, nu a fost gasit... \nInitializez programul in modul "0"... \nCreez o lista noua de angajati pentru tine... ')
+        display.eroare('Fisierul cu angajatii, nu a fost gasit... \nInitializez programul in modul "0"... \nCreez o lista noua de angajati pentru tine... ')
         angajati = []
-        print('Noua lista de angajati a fost creata cu succes si poate fi populata! \nAcum puteti sa va bucurati de program.')
+        display.info('Noua lista de angajati a fost creata cu succes si poate fi populata! \nAcum puteti sa va bucurati de program.')
+    display.titlu("Aplicatie de management a angajatilor")
     print("""
     1) Adaugare angajat
     2) Cautare angajat (dupa CNP)
@@ -546,5 +566,5 @@ Responsabila pentru:
     elif selectie == "11":
         afisare_angajati_dupa_departament(angajati)
     elif selectie == "12":
-        print("Ati iesit din program!")
+        display.info("Ati iesit din program!")
         break

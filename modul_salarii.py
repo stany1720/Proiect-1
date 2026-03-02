@@ -1,4 +1,5 @@
 import os
+import display
 import datetime
 from typing import List, Dict, Any
 import cautare
@@ -19,12 +20,14 @@ def calcul_total_salarii_comp(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    display.titlu("Calculeaza si afiseaza totalul salariilor")
     total_salarii_comp = []
     for angajat in angajati:
         total_salarii_comp.append(angajat['Salar'])
         total = sum(total_salarii_comp)
-    return print(f"Total salariilor din companie este de {total} RON. ")
-
+        display.succes(f"Total salariilor din companie este de {total} RON. ")
+        return total
+    
 def calcul_total_salarii_dep(angajati: ListaAngajati) -> None:
     """
     Calculeaza si afiseaza totalul salariilor brute per departament.
@@ -39,8 +42,8 @@ def calcul_total_salarii_dep(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    display.titlu("Calculeaza si afiseaza totalul salariilor brute per departament")    
     dictionar_angajati = {}
-
     for angajat in angajati:
         departament = angajat['Departament']
         salar = float(angajat['Salar'])
@@ -53,7 +56,7 @@ def calcul_total_salarii_dep(angajati: ListaAngajati) -> None:
         pass
     else:
         for departament, total in dictionar_angajati.items():
-            print(f"Departamentul {departament}: {total} RON.")
+            display.succes(f"Departamentul {departament}: {total} RON.")
 
 def calcul_fluturas_salar(angajati: ListaAngajati) -> None:
     """
@@ -75,6 +78,8 @@ def calcul_fluturas_salar(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
+    display.titlu("Calculeaza fluturasul de salariu")
+    data_curenta = datetime.datetime.now().strftime("%d-%m-%Y %H:%m")
     angajat_gasit = cautare.cautare_angajat(angajati)
     if angajat_gasit is None:
         return
@@ -86,19 +91,21 @@ def calcul_fluturas_salar(angajati: ListaAngajati) -> None:
     impozit = impozabil * 0.10
     net = impozabil - impozit
 
-    return print(f'''Pentru angajatul {angajat_gasit['Nume']} {angajat_gasit['Prenume']},
+    display.titlu(f'''Pentru angajatul {angajat_gasit['Nume']} {angajat_gasit['Prenume']}
 --------------------------------
-Salariul brut este de {brut} RON
+ Salariul brut este de {brut} RON
 --------------------------------
-CAS-ul este de {cas} RON, 
+ CAS-ul este de {cas} RON
 --------------------------------
-CASS-ul este de {cass} RON, 
+ CASS-ul este de {cass} RON
 --------------------------------
-Impozitul este de {impozit} RON 
+ Impozitul este de {impozit} RON
 --------------------------------
-Salariul net este de {net} RON
+ Salariul net este de {net} RON
 --------------------------------
-Aceasta este situatia curenta la data: {datetime}''')
+ Exportat in data: {data_curenta}''')
+    
+    print("")
 
 def export_fluturasi(angajati: ListaAngajati) -> None:
     """
@@ -116,7 +123,8 @@ def export_fluturasi(angajati: ListaAngajati) -> None:
     Returns:
         None
     """
-    data_curenta = datetime.datetime.now()
+    display.titlu("Genereaza un fisier continand fluturasul de salariu")
+    data_curenta = datetime.datetime.now().strftime("%d-%m-%Y %H:%m")
     path_director = r"Proiect 1\salarii"
     if not os.path.exists(path_director):
         os.makedirs(path_director)
@@ -154,4 +162,6 @@ Impozitul este de {impozit} RON
 --------------------------------
 Salariul net este de {net} RON
 --------------------------------
-Aceasta este situatia curenta la data: {data_curenta}''')
+Exportat in data: {data_curenta}''')
+    
+    display.succes(f"Fluturasul de salariu pentru {angajat_gasit['Nume']} {angajat_gasit['Prenume']} a fost exportat.")
