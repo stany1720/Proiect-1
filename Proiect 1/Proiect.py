@@ -316,9 +316,19 @@ def modificare_angajat(angajati: ListaAngajati) -> None:
                     display.succes(f"{angajat_gasit['Nume']} a fost transferat la departamentul: {angajat_gasit['Departament']}.")
                     break
                 else:
-                    display.info("Alegeti un departament din cele de mai sus.")
-                    continue
-            display.info("Ce alte campuri mai doresti sa editezi? ")     
+                    display.info("Doriti sa creati un departamentr nou? \n1. DA \nsau \n2. NU")
+                    raspuns = input("Alegeti un raspuns de mai sus. ")
+                    if raspuns == "1":
+                        angajat_gasit['Departament'] = departament
+                        display.succes(f"{angajat_gasit['Nume']} {angajat_gasit['Prenume']} a fost mutata in noul departament!")
+                        salvare(angajati)
+                        break
+                    elif raspuns == "2":
+                        continue
+                    else:
+                        display.eroare(
+                            "Optiunea selectata nu corespunde cu optiunile prezente. \nVa rugam incercati din nou.")
+            display.info("Ce alte campuri mai doresti sa editezi? ")
         elif select_mod == "7":
             # --- Modificare Senioritate ---
             lista_senioritate = []
